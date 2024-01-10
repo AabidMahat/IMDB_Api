@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function NavBar({ children }) {
   return (
     <nav className="nav-bar">
