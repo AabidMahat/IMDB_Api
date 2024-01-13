@@ -18,6 +18,6 @@ Clicking on a movie provides detailed information about the movie.
 
 ## Demo
 
-The application is deployed and can be accessed at 
--[https://aabid-imdbrating-api.netlify.app/](https://aabid-imdbrating-api.netlify.app/).
--[https://aabid-imdb-api.vercel.app/](https://aabid-imdb-api.vercel.app/).
+The application is deployed and can be accessed at .
+- [https://aabid-imdbrating-api.netlify.app/](https://aabid-imdbrating-api.netlify.app/).
+- [https://aabid-imdb-api.vercel.app/](https://aabid-imdb-api.vercel.app/).
