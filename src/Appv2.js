@@ -20,7 +20,7 @@ export default function AppV2() {
 
   const [selectedId, setSelectedId] = useState(null);
 
-  const [movies, isLoading, error] = UseMovie(search, handleCloseMovie); // Custom hook
+  const [movies, isLoading, error] = UseMovie(search); // Custom hook
 
   // const [watched, setWatched] = useState([]);
   // WE can use call function in local storage

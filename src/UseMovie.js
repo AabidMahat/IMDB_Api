@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 
 const KEY = "21f1d128";
 
-export function UseMovie(search, handleCloseMovie) {
+export function UseMovie(search) {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   useEffect(() => {
-    handleCloseMovie?.(); //Optional Chaining
     const controller = new AbortController();
 
     const fetchData = async () => {
