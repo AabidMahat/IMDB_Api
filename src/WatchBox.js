@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { average } from "./Data";
 import StarRating from "./StarRating";
 import Loading from "./Loading";
+import { useKey } from "./UseKey";
 // export default function WatchBox() {
 //   const [isOpen2, setIsOpen2] = useState(true);
 
@@ -49,18 +50,7 @@ export function MovieDetails({
     handleCloseMovie();
   }
 
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Escape") {
-        handleCloseMovie();
-      }
-    }
-    document.addEventListener("keydown", callback);
-
-    return function () {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [handleCloseMovie]);
+  useKey(handleCloseMovie, "Escape");
 
   useEffect(
     function () {
@@ -169,7 +159,7 @@ export function WatchedSummary({ watched }) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime} min</span>
+          <span>{avgRuntime.toFixed(2)} min</span>
         </p>
       </div>
     </div>

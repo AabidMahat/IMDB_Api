@@ -1,3 +1,6 @@
+import { useEffect, useRef } from "react";
+import { useKey } from "./UseKey";
+
 export default function NavBar({ children }) {
   return (
     <nav className="nav-bar">
@@ -16,6 +19,28 @@ function Logo() {
   );
 }
 export function Search({ search, setSearch }) {
+  const inputEl = useRef(null);
+
+  useKey(function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setSearch("");
+  }, "Enter");
+
+  // useEffect(
+  //   function () {
+  //     document.addEventListener("keydown", (e) => {
+  //       if (document.activeElement === inputEl.current) return;
+
+  //       if (e.code === "Enter") {
+  //         inputEl.current.focus();
+  //         setSearch("");
+  //       }
+  //     });
+  //   },
+  //   [setSearch]
+  // );
+
   return (
     <input
       className="search"
@@ -23,6 +48,7 @@ export function Search({ search, setSearch }) {
       placeholder="Search movies..."
       value={search}
       onChange={(e) => setSearch(e.target.value)}
+      ref={inputEl}
     />
   );
 }
