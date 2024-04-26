@@ -13,14 +13,14 @@ export default function Box({ children }) {
   );
 }
 
-export function MovieList({ movies, onHandleSelectedId }) {
+export function MovieList({ medicines, onHandleSelectedId }) {
   //   const [movies, setMovies] = useState(tempMovieData);
   return (
     <ul className="list list-movies">
-      {movies?.map((movie, i) => (
+      {medicines?.map((medicine, i) => (
         <Movie
-          movie={movie}
-          key={movie.imdbID}
+          medicine={medicine}
+          key={medicine.id}
           onHandleSelectedId={onHandleSelectedId}
         />
       ))}
@@ -28,17 +28,17 @@ export function MovieList({ movies, onHandleSelectedId }) {
   );
 }
 
-function Movie({ movie, key, onHandleSelectedId }) {
+function Movie({ medicine, key, onHandleSelectedId }) {
   return (
-    <li key={key} onClick={() => onHandleSelectedId(movie.imdbID)}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
-      <div>
+    <li key={key} onClick={() => onHandleSelectedId(medicine._id)}>
+      {/* <img src={movie.Poster} alt={`${movie.Title} poster`} /> */}
+      <h3>{medicine.name.split("-")[0]}</h3>
+      {/* <div>
         <p>
           <span>🗓</span>
           <span>{movie.Year}</span>
         </p>
-      </div>
+      </div> */}
     </li>
   );
 }

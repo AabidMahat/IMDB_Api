@@ -13,8 +13,8 @@ export default function NavBar({ children }) {
 function Logo() {
   return (
     <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
+      <img src="../logo-ct.png" alt="Medical" className="image" />
+      <h1>Medical Tracker</h1>
     </div>
   );
 }

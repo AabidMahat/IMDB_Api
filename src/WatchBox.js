@@ -3,6 +3,9 @@ import { average } from "./Data";
 import StarRating from "./StarRating";
 import Loading from "./Loading";
 import { useKey } from "./UseKey";
+import axios from "axios";
+import "./order.css";
+import { Link } from "react-router-dom";
 // export default function WatchBox() {
 //   const [isOpen2, setIsOpen2] = useState(true);
 
@@ -28,12 +31,13 @@ export function MovieDetails({
   watched,
 }) {
   const [movie, setMovie] = useState({});
+  const [medicine, setMedicine] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
 
-  const isWatched = watched.map((movie) => movie.imdbId).includes(selectedId);
+  const isWatched = watched.map((medicine) => medicine.id).includes(selectedId);
   const watchUserRating = watched.find(
-    (movie) => movie.imdbId === selectedId
+    (medicine) => medicine.id === selectedId
   )?.userRating;
 
   function handleAdd() {
@@ -46,7 +50,17 @@ export function MovieDetails({
       runtime: Number(movie.Runtime.split(" ").at(0)),
       userRating,
     };
-    onHandleWatch(newWatchedMovie);
+
+    const newMedicine = {
+      id: selectedId,
+      name: medicine.name,
+      sideEffects: medicine.sideEffect,
+      usage: medicine.use,
+      substitues: medicine.substitute,
+      medicals: medicine.medicals,
+    };
+
+    onHandleWatch(newMedicine);
     handleCloseMovie();
   }
 
@@ -56,11 +70,14 @@ export function MovieDetails({
     function () {
       async function getMovieDetails() {
         setIsLoading(true);
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+        const res = await axios.get(
+          `http://localhost:4000/api/v1/medicines/${selectedId}`
         );
-        const data = await res.json();
-        setMovie(data);
+
+        const resData = await res.data;
+        const data = resData.data.medicines;
+        console.log(data);
+        setMedicine(data);
         setIsLoading(false);
       }
       getMovieDetails();
@@ -70,14 +87,15 @@ export function MovieDetails({
 
   useEffect(
     function () {
-      if (!movie.Title) return;
-      document.title = `Movie | ${movie.Title}`;
+      console.log(medicine.name);
+      if (!medicine.name) return;
+      document.title = `Medicine | ${medicine.name}`;
 
       return function () {
         document.title = "usePopcorn";
       };
     },
-    [movie.Title]
+    [medicine.name]
   );
 
   return (
@@ -92,45 +110,79 @@ export function MovieDetails({
             </button>
             <img src={movie.Poster} alt={movie.Title} />
             <div className="details-overview">
-              <h2>{movie.Title}</h2>
+              <h2>{medicine.name}</h2>
               <p>
-                {movie.Released} &bull; {movie.Runtime}
+                {/* {movie.Released} &bull; {movie.Runtime} */}
+                Medicine Type &bull; {(medicine.name ?? "").split(" ").pop()}
               </p>
-              <p>{movie.Genre}</p>
+              <p>
+                Content &bull;
+                {(medicine.name ?? "").match(
+                  /\d+(\.\d+)?(mg)?(\/\d+(\.\d+)?(mg)?)?/
+                )?.[0] ?? "No Content Provided"}
+              </p>
               <p>
                 <span>⭐</span>
-                {movie.imdbRating} IMBD rating
+                {movie.imdbRating} 5
               </p>
             </div>
           </header>
           <section>
-            <div className="rating">
-              {!isWatched ? (
-                <>
-                  <StarRating
-                    maxRating={10}
-                    size={24}
-                    onSetRating={setUserRating}
-                  />
-                  {userRating > 0 && (
-                    <button className="btn-add" onClick={handleAdd}>
-                      + Add to list
-                    </button>
-                  )}
-                </>
-              ) : (
-                <p>
-                  You rated movie with :- {watchUserRating}
-                  <span>⭐</span>
-                </p>
-              )}
-            </div>
-            <p>
-              <em>{movie.Plot}</em>
-            </p>
-            <p>Starring {movie.Actors}</p>
-            <p>Directed by {movie.Director}</p>
+            <ol className="olcards">
+              <li style={{ "--cardColor": "#343a40" }}>
+                <div className="content">
+                  <div className="title">Usage</div>
+                  <div className="text">
+                    {medicine.use?.map((med, index) => (
+                      <p key={index}>{med}</p>
+                    ))}
+                  </div>
+                </div>
+              </li>
+              <li style={{ "--cardColor": "#343a40" }}>
+                <div className="content">
+                  <div className="title">SideEffects</div>
+                  <div className="text">
+                    {medicine.sideEffect?.map((med, index) => (
+                      <p key={index}>{med}</p>
+                    ))}
+                  </div>
+                </div>
+              </li>
+              <li style={{ "--cardColor": "#343a40" }}>
+                <div className="content">
+                  <div className="title">Substitue</div>
+                  <div className="text">
+                    {medicine.substitute?.map((med, index) => (
+                      <p key={index}>{med}</p>
+                    ))}
+                  </div>
+                </div>
+              </li>
+              <li style={{ "--cardColor": "#343a40" }}>
+                <div className="content">
+                  <div className="title">Medicals</div>
+                  <div className="text">
+                    {medicine.medicals?.map((med) => (
+                      <p key={med.cityName}>
+                        {med.cityName}{" "}
+                        <span className="contact">({med.contact})</span>
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </li>
+            </ol>
           </section>
+          <div className="btnCenter">
+            {}
+            <Link
+              to={`http://localhost:5173/app/cities/?medical=${encodeURIComponent(
+                JSON.stringify(medicine.medicals)
+              )}`}>
+              <button class="button-30">Go to Map</button>
+            </Link>
+          </div>
         </>
       )}
     </div>
@@ -207,3 +259,36 @@ function WatchedMovie({ movie, key, onDeleteWatched }) {
     </li>
   );
 }
+
+/* <p>
+              Usage:-
+              <ol>
+                {medicine.use?.map((med) => (
+                  <li>{med}</li>
+                ))}
+              </ol>
+            </p>
+            <p>
+              SideEffects:-
+              <ol>
+                {medicine.sideEffect?.map((med) => (
+                  <li>{med}</li>
+                ))}
+              </ol>
+            </p>
+            <p>
+              Substitue:-
+              <ol>
+                {medicine.substitute?.map((med) => (
+                  <li>{med}</li>
+                ))}
+              </ol>
+            </p>
+            <p>
+              Medicals:-
+              <ol>
+                {medicine.medicals?.map((med) => (
+                  <li>{med.cityName}</li>
+                ))}
+              </ol>
+            </p> */

@@ -29,6 +29,9 @@ body {
   padding: 2.4rem;
 }
 
+.image {
+  width: 40px;
+}
 /* ******* */
 
 .nav-bar {
@@ -50,8 +53,8 @@ body {
 }
 
 .box {
-  width: 42rem;
-  max-width: 42rem;
+  width: 52rem;
+  max-width: 52rem;
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
   overflow-y: scroll;
@@ -175,6 +178,7 @@ body {
 
 .list h3 {
   font-size: 1.8rem;
+  width: max-content;
 }
 
 .list div {
@@ -341,15 +345,15 @@ body {
 }
 
 /* Scrollbar */
-.box::-webkit-scrollbar {
+html::-webkit-scrollbar {
   width: 0.8em;
 }
 
-.box::-webkit-scrollbar-track {
+html::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.box::-webkit-scrollbar-thumb {
+html::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background-color: slategrey;
   outline: 1px solid slategrey;
